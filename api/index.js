@@ -1,5 +1,6 @@
 const cors = require('cors');
 const express = require('express');
+const serverless = require('serverless-http'); // 🔥 Add this
 
 const app = express();
 app.use(cors());
@@ -55,8 +56,8 @@ const processData = (data) => {
   return result;
 };
 
-// Exported handler for Vercel
-const handler = app.post('/bfhl', (req, res) => {
+// API route
+app.post('/bfhl', (req, res) => {
   try {
     const { data } = req.body;
 
@@ -84,4 +85,4 @@ const handler = app.post('/bfhl', (req, res) => {
   }
 });
 
-module.exports = app;
+module.exports = serverless(app);
