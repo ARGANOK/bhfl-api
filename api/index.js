@@ -1,10 +1,9 @@
-const express = require('express');
 const cors = require('cors');
+const express = require('express');
 
 const app = express();
-
-app.use(express.json()); // Correct middleware
 app.use(cors());
+app.use(express.json());
 
 // User Info
 const userDetails = {
@@ -47,7 +46,6 @@ const processData = (data) => {
     }
   });
 
-  // Create alternating caps reversed string
   const reversed = alphaConcat.split('').reverse();
   result.concat_string = reversed.map((char, index) =>
     index % 2 === 0 ? char.toUpperCase() : char.toLowerCase()
@@ -57,8 +55,8 @@ const processData = (data) => {
   return result;
 };
 
-// API Route
-app.post('/bfhl', (req, res) => {
+// Exported handler for Vercel
+const handler = app.post('/bfhl', (req, res) => {
   try {
     const { data } = req.body;
 
@@ -86,8 +84,4 @@ app.post('/bfhl', (req, res) => {
   }
 });
 
-// Start Server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+module.exports = app;
